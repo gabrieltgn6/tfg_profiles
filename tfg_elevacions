@@ -1,0 +1,41 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Cargar los datos desde el archivo CSV
+df = pd.read_csv(r'C:\Users\gabri\Documents\Programacion\python\TFG\Perfils\elevaciones.csv')
+
+# Obtener los perfiles únicos
+perfiles = df['Perfil'].unique()
+
+# Crear una figura
+plt.figure(figsize=(15, 8))  # Reducir el tamaño del gráfico
+
+# Definir el número de columnas para la distribución de subgráficos
+num_columnas = 2
+
+# Iterar sobre cada perfil
+for i, perfil in enumerate(perfiles, 1):
+    # Filtrar los datos por perfil
+    datos_perfil = df[df['Perfil'] == perfil]
+    
+    # Obtener los años únicos para el perfil
+    años = datos_perfil['Año'].unique()
+    
+    # Crear una subtrama para cada perfil
+    plt.subplot(len(perfiles)//num_columnas + 1, num_columnas, i)
+    
+    # Iterar sobre cada año y graficar
+    for año in años:
+        datos_año = datos_perfil[datos_perfil['Año'] == año]
+        plt.plot(datos_año['Distancia'], datos_año['Elevacion'], label=f'Any {año}')
+    
+    # Añadir título y etiquetas
+    plt.title(f'Perfil {perfil}')
+    plt.xlabel('Distancia des del primer punt (m)')
+    plt.ylabel('Elevació (m)')
+    plt.legend()
+    plt.grid(True)
+
+# Ajustar el layout
+plt.tight_layout()
+plt.show()
